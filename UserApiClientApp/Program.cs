@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UserApiClient;
 using UserApiModels;
-
+using System;
 namespace UserApiClientApp
 {
     class Program
@@ -15,12 +15,36 @@ namespace UserApiClientApp
                 IIN = "300716163019",
                 FirstName = "Leojo",
                 LastName = "Capiro",
-                BirthDate = System.DateTime.Now
+                BirthDate = DateTime.Now
             };
 
-            userApiClient.Create(user);
-            await userApiClient.Update(user);
-            var result = await userApiClient.GetDetails("300716163019");
+            while (true)
+            {
+                try
+                {
+                    string str = Console.ReadLine();
+
+                    switch (str)
+                    {
+                        case "c":
+                            await userApiClient.Create(user);
+                            break;
+                        case "g":
+                            var result = await userApiClient.GetDetails(user.IIN);
+                            break;
+                        case "d":
+                            await userApiClient.Delete(user.IIN);
+                            break;
+                        case "u":
+                            await userApiClient.Update(user);
+                            break;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }

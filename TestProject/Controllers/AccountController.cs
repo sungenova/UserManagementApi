@@ -18,7 +18,6 @@ namespace UserApiWeb.Controllers
             new Admin{ Login = "admin@gmail.com", Password = "123456" }
         };
 
-        //[HttpPost("/token")]
         [HttpPost]
         public IActionResult Token(Admin model)
         {

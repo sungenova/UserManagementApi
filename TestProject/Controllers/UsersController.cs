@@ -36,7 +36,7 @@ namespace UserApiWeb.Controllers
             }
             else
             {
-                return StatusCode(400); //ValidationProblem(ModelState);
+                return StatusCode(400);
             }
         }
 

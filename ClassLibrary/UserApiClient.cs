@@ -10,10 +10,10 @@ namespace UserApiClient
 {
     public class ApiClient
     {
-        public void Create(User user)
+        public async Task Create(User user)
         {
             var myContent = JsonConvert.SerializeObject(user);
-           
+
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:44337");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -22,7 +22,7 @@ namespace UserApiClient
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/users");
             request.Content = new StringContent(myContent, Encoding.UTF8, "application/json");
 
-            var m = client.SendAsync(request).Result;
+            var m = await client.SendAsync(request);
         }
         public string GetToken()
         {
@@ -43,7 +43,7 @@ namespace UserApiClient
 
             var responseMessage = client.SendAsync(request).Result;
 
-            string token =  responseMessage.Content.ReadAsStringAsync().Result;
+            string token = responseMessage.Content.ReadAsStringAsync().Result;
 
             var ob = JsonConvert.DeserializeObject<TokenResponse>(token);
             return ob.access_token;
@@ -56,7 +56,7 @@ namespace UserApiClient
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GetToken());
 
             var request = new HttpRequestMessage(HttpMethod.Get, "/api/users?iin=" + iin);
-            
+
             var response = await httpClient.SendAsync(request);
             string stringResult = await response.Content.ReadAsStringAsync();
 
@@ -76,11 +76,23 @@ namespace UserApiClient
             request.Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
             var response = await httpClient.SendAsync(request);
         }
+
+        public async Task Delete(string iin)
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://localhost:44337");
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GetToken());
+
+            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/users?iin=" + iin);
+
+            var response = await httpClient.SendAsync(request);
+        }
     }
     class TokenResponse
     {
-        public string access_token{ get; set; }
+        public string access_token { get; set; }
     }
 
-    
+
 }

@@ -39,10 +39,6 @@ namespace UserApiWeb
                 var sqlQuery = "INSERT INTO Users (IIN, FirstName, LastName, BirthDate) VALUES(@IIN, @FirstName, @LastName, @BirthDate)";
                 db.Execute(sqlQuery, user);
 
-                // если мы хотим получить id добавленного пользователя
-                //var sqlQuery = "INSERT INTO Users (Name, Age) VALUES(@Name, @Age); SELECT CAST(SCOPE_IDENTITY() as int)";
-                //int? userId = db.Query<int>(sqlQuery, user).FirstOrDefault();
-                //user.Id = userId.Value;
             }
         }
 
